@@ -48,9 +48,7 @@ if __name__ == '__main__':
     logger.addHandler(ch)
 
     dataset_cls, train_loader, dev_loader, test_loader, embedding = get_dataset(args)
-    #dataset_cls, train_loader, dev_loader, test_loader = get_dataset(args)
     model = get_model(args, dataset_cls, embedding)
-    #model = get_model(args, dataset_cls, null)
 
     if args.model == 'sif':
         model.populate_word_frequency_estimation(train_loader)

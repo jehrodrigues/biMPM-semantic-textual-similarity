@@ -7,10 +7,11 @@ import math
 
 import numpy as np
 import torch
-from torchtext.data import BucketIterator, Field, interleave_keys, RawField
+from torchtext.data import BucketIterator, interleave_keys, RawField #Field
 from torchtext.data.dataset import TabularDataset
 from torchtext.data.pipeline import Pipeline
 from torchtext.vocab import Vectors
+from myfield import myField
 from myvocab import myVectors
 from torchtext.vocab import FastText
 from torchtext.vocab import GloVe
@@ -66,14 +67,15 @@ class ASSIN(TabularDataset):
 
     @classmethod
     def iters(cls, batch_size=64, device=-1, shuffle=True, vectors='glove.300d'):
-        cls.TEXT = Field(sequential=True, tokenize='spacy', lower=True, batch_first=True)
-        cls.LABEL = Field(sequential=False, use_vocab=False, batch_first=True, tensor_type=torch.FloatTensor, postprocessing=Pipeline(get_class_probs))
-        cls.ID = Field(sequential=False, use_vocab=False, batch_first=True, tensor_type=torch.FloatTensor)
+        cls.TEXT = myField(sequential=True, tokenize='spacy', lower=True, batch_first=True)
+        cls.LABEL = myField(sequential=False, use_vocab=False, batch_first=True, tensor_type=torch.FloatTensor, postprocessing=Pipeline(get_class_probs))
+        cls.ID = myField(sequential=False, use_vocab=False, batch_first=True, tensor_type=torch.FloatTensor)
 
         train, val, test = cls.splits(cls.TEXT, cls.LABEL, cls.ID)
 
-        vectors = Vectors(name='glove_s300.txt', url='http://143.107.183.175:22980/download.php?file=embeddings/glove/glove_s300.zip')
-
+        #vectors = Vectors(name='wiki.pt.vec', url='https://dl.fbaipublicfiles.com/fasttext/vectors-wiki/wiki.pt.vec')
+        vectors = Vectors(name='glove_s50p.txt')
+        print('build_vocab')
         cls.TEXT.build_vocab(train, vectors)
-
+        print('build_vocab finish')
         return BucketIterator.splits((train, val, test), batch_size=batch_size, shuffle=shuffle, repeat=False, device=device)

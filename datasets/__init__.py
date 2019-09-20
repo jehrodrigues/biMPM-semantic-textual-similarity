@@ -29,7 +29,8 @@ def get_dataset(args):
         embedding.weight = nn.Parameter(ASSIN.TEXT.vocab.vectors)
         embedding.weight.requires_grad = False
 
-        return ASSIN, train_loader, dev_loader, test_loader, embedding
+        return ASSIN, train_loader, dev_loader, test_loader
+        #return ASSIN, train_loader, dev_loader, test_loader, embedding
     elif args.dataset == 'wikiqa':
         train_loader, dev_loader, test_loader = WikiQA.iters(batch_size=args.batch_size, device=args.device, shuffle=True)
 
