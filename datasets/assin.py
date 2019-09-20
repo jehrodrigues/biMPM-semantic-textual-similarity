@@ -74,8 +74,9 @@ class ASSIN(TabularDataset):
         train, val, test = cls.splits(cls.TEXT, cls.LABEL, cls.ID)
 
         #vectors = Vectors(name='wiki.pt.vec', url='https://dl.fbaipublicfiles.com/fasttext/vectors-wiki/wiki.pt.vec')
-        vectors = Vectors(name='glove_s50p.txt')
+        #vectors = Vectors(name='glove_s50.txt', url='http://143.107.183.175:22980/download.php?file=embeddings/glove/glove_s50.zip')
+        vectors = Vectors(name='glove_s300.txt', url='http://143.107.183.175:22980/download.php?file=embeddings/glove/glove_s300.zip')
         print('build_vocab')
-        cls.TEXT.build_vocab(train, vectors)
+        cls.TEXT.build_vocab(train, vectors=vectors)
         print('build_vocab finish')
         return BucketIterator.splits((train, val, test), batch_size=batch_size, shuffle=shuffle, repeat=False, device=device)

@@ -239,8 +239,6 @@ class myField(Field, RawField):
                 provided directly.
             Remaining keyword arguments: Passed to the constructor of Vocab.
         """
-        print('*args: ', *args)
-        print('**kwargs: ', **kwargs)
         counter = Counter()
         sources = []
         for arg in args:
@@ -249,16 +247,13 @@ class myField(Field, RawField):
                             arg.fields.items() if field is self]
             else:
                 sources.append(arg)
-            print('arg: ', arg)
         print('saiu do primeiro for (sources): ', sources)
         for data in sources:
-            print('data: ', data)
             for i, x in enumerate(data):
                 if not self.sequential:
                     x = [x]
                 counter.update(x)
-            print('i: ', i)
-        print('saiu do segundo for: ', counter.items())
+        print('saiu do segundo for')
         specials = list(OrderedDict.fromkeys(
             tok for tok in [self.unk_token, self.pad_token, self.init_token,
                             self.eos_token]
@@ -266,7 +261,6 @@ class myField(Field, RawField):
         print('antes do vocab_cls')
         self.vocab = self.vocab_cls(counter, specials=specials, **kwargs)
         print('fim')
-        print('fim vocab: ', self.vocab)
 
     def numericalize(self, arr, device=None, train=True):
         """Turn a batch of examples that use this field into a Variable.
